@@ -20,7 +20,7 @@ function pkcs5_pad_e($text, $blocksize) {
 }
 
 function pkcs5_unpad_e($text) {
-	$pad = ord($text{strlen($text) - 1});
+	$pad = ord($text[strlen($text) - 1]);
 	if ($pad > strlen($text))
 		return false;
 	return substr($text, 0, -1 * $pad);
@@ -146,7 +146,7 @@ function getArray2StrForVerify($arrayList) {
 }
 
 function redirect2PG($paramList, $key) {
-	$hashString = getchecksumFromArray($paramList);
+	$hashString = getChecksumFromArray($paramList, $key);
 	$checksum = encrypt_e($hashString, $key);
 }
 
@@ -177,8 +177,9 @@ function callAPI($apiURL, $requestParamList) {
 	$JsonData =json_encode($requestParamList);
 	$postData = 'JsonData='.urlencode($JsonData);
 	$ch = curl_init($apiURL);
-	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
-	curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);                                                                  
+	$httpMethod = 'POST';
+	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $httpMethod);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
 	curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);
 	curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, 0);
@@ -197,8 +198,9 @@ function callNewAPI($apiURL, $requestParamList) {
 	$JsonData =json_encode($requestParamList);
 	$postData = 'JsonData='.urlencode($JsonData);
 	$ch = curl_init($apiURL);
-	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
-	curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);                                                                  
+	$httpMethod = 'POST';
+	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $httpMethod);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
 	curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);
 	curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, 0);
@@ -247,7 +249,7 @@ function callRefundAPI($refundApiURL, $requestParamList) {
 	$responseParamList = array();
 	$JsonData =json_encode($requestParamList);
 	$postData = 'JsonData='.urlencode($JsonData);
-	$ch = curl_init($apiURL);	
+	$ch = curl_init($refundApiURL);
 	curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);
 	curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, 0);
 	curl_setopt($ch, CURLOPT_URL, $refundApiURL);

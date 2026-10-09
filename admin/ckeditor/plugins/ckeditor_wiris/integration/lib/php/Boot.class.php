@@ -27,59 +27,59 @@ function _hx_anonymous($arr = array()) {
 }
 
 class _hx_array implements ArrayAccess, IteratorAggregate {
-	var $»a;
+	var $ï¿½a;
 	var $length;
 	function __construct($a = array()) {
-		$this->»a = $a;
+		$this->ï¿½a = $a;
 		$this->length = count($a);
 	}
 
 	function concat($a) {
-		return new _hx_array(array_merge($this->»a, $a->»a));
+		return new _hx_array(array_merge($this->ï¿½a, $a->ï¿½a));
 	}
 
 	function copy() {
-		return new _hx_array($this->»a);
+		return new _hx_array($this->ï¿½a);
 	}
 
 	function &get($index) {
-		if(isset($this->»a[$index])) return $this->»a[$index];
+		if(isset($this->ï¿½a[$index])) return $this->ï¿½a[$index];
 		return null;
 	}
 
 	function insert($pos, $x) {
-		array_splice($this->»a, $pos, 0, array($x));
+		array_splice($this->ï¿½a, $pos, 0, array($x));
 		$this->length++;
 	}
 
 	function iterator() {
-		return new _hx_array_iterator($this->»a);
+		return new _hx_array_iterator($this->ï¿½a);
 	}
 
-	function getIterator() {
+	public function getIterator(): Traversable {
 		return $this->iterator();
 	}
 
 	function join($sep) {
-		return implode($sep, $this->»a);
+		return implode($sep, $this->ï¿½a);
 	}
 
 	function pop() {
-		$r = array_pop($this->»a);
-		$this->length = count($this->»a);
+		$r = array_pop($this->ï¿½a);
+		$this->length = count($this->ï¿½a);
 		return $r;
 	}
 
 	function push($x) {
-		$this->»a[] = $x;
+		$this->ï¿½a[] = $x;
 		return ++$this->length;
 	}
 
 	function remove($x) {
-		for($i = 0; $i < count($this->»a); $i++)
-			if($this->»a[$i] === $x) {
-				unset($this->»a[$i]);
-				$this->»a = array_values($this->»a);
+		for($i = 0; $i < count($this->ï¿½a); $i++)
+			if($this->ï¿½a[$i] === $x) {
+				unset($this->ï¿½a[$i]);
+				$this->ï¿½a = array_values($this->ï¿½a);
 				$this->length--;
 				return true;
 			}
@@ -87,8 +87,8 @@ class _hx_array implements ArrayAccess, IteratorAggregate {
 	}
 
 	function removeAt($pos) {
-		if(array_key_exists($pos, $this->»a)) {
-			unset($this->»a[$pos]);
+		if(array_key_exists($pos, $this->ï¿½a)) {
+			unset($this->ï¿½a[$pos]);
 			$this->length--;
 			return true;
 		} else
@@ -96,35 +96,35 @@ class _hx_array implements ArrayAccess, IteratorAggregate {
 	}
 
 	function reverse() {
-		$this->»a = array_reverse($this->»a, false);
+		$this->ï¿½a = array_reverse($this->ï¿½a, false);
 	}
 
 	function shift() {
-		$r = array_shift($this->»a);
-		$this->length = count($this->»a);
+		$r = array_shift($this->ï¿½a);
+		$this->length = count($this->ï¿½a);
 		return $r;
 	}
 
 	function slice($pos, $end) {
 		if($end === null)
-			return new _hx_array(array_slice($this->»a, $pos));
+			return new _hx_array(array_slice($this->ï¿½a, $pos));
 		else
-			return new _hx_array(array_slice($this->»a, $pos, $end-$pos));
+			return new _hx_array(array_slice($this->ï¿½a, $pos, $end-$pos));
 	}
 
 	function sort($f) {
-		usort($this->»a, $f);
+		usort($this->ï¿½a, $f);
 	}
 
 	function splice($pos, $len) {
 		if($len < 0) $len = 0;
-		$nh = new _hx_array(array_splice($this->»a, $pos, $len));
-		$this->length = count($this->»a);
+		$nh = new _hx_array(array_splice($this->ï¿½a, $pos, $len));
+		$this->length = count($this->ï¿½a);
 		return $nh;
 	}
 
 	function toString() {
-		return '['.implode(',', array_map('_hx_string_rec',$this->»a,array())).']';
+		return '['.implode(',', array_map('_hx_string_rec',$this->ï¿½a,array())).']';
 	}
 
 	function __toString() {
@@ -132,68 +132,69 @@ class _hx_array implements ArrayAccess, IteratorAggregate {
 	}
 
 	function unshift($x) {
-		array_unshift($this->»a, $x);
+		array_unshift($this->ï¿½a, $x);
 		$this->length++;
 	}
 
 	// ArrayAccess methods:
-	function offsetExists($offset) {
-		return isset($this->»a[$offset]);
+	public function offsetExists($offset): bool {
+		return isset($this->ï¿½a[$offset]);
 	}
 
-	function offsetGet($offset) {
-		if(isset($this->»a[$offset])) return $this->»a[$offset];
+	public function offsetGet($offset): mixed {
+		if(isset($this->ï¿½a[$offset])) return $this->ï¿½a[$offset];
 		return null;
 	}
 
-	function offsetSet($offset, $value) {
+	public function offsetSet($offset, $value): void {
 		if($this->length <= $offset) {
-			$this->»a = array_merge($this->»a, array_fill(0, $offset+1-$this->length, null));
+			$this->ï¿½a = array_merge($this->ï¿½a, array_fill(0, $offset+1-$this->length, null));
 			$this->length = $offset+1;
 		}
-		return $this->»a[$offset] = $value;
+		$this->ï¿½a[$offset] = $value;
 	}
 
-	function offsetUnset($offset) {
-		return $this->removeAt($offset);
+	public function offsetUnset($offset): void {
+		$this->removeAt($offset);
 	}
 }
 
 class _hx_array_iterator implements Iterator {
-	private $»a;
-	private $»i;
+	private $ï¿½a;
+	private $ï¿½i;
 	public function __construct($a) {
-		$this->»a = $a;
-		$this->»i = 0;
+		$this->ï¿½a = $a;
+		$this->ï¿½i = 0;
 	}
 
-	public function next() {
-		if(!$this->hasNext()) return null;
-		return $this->»a[$this->»i++];
+	public function next(): void {
+		if($this->hasNext()) {
+			$this->ï¿½a[$this->ï¿½i++];
+		}
 	}
 
 	public function hasNext() {
-		return $this->»i < count($this->»a);
+		return $this->ï¿½i < count($this->ï¿½a);
 	}
 
-	public function current() {
+	public function current(): mixed {
 		if (!$this->hasNext()) return false;
-		return $this->»a[$this->»i];
+		return $this->ï¿½a[$this->ï¿½i];
 	}
 
-	public function key() {
-		return $this->»i;
+	public function key(): mixed {
+		return $this->ï¿½i;
 	}
 
-	public function valid() {
+	public function valid(): bool {
 		return $this->current() !== false;
 	}
 
-	public function rewind() {
-		$this->»i = 0;
+	public function rewind(): void {
+		$this->ï¿½i = 0;
 	}
 	public function size() {
-		return count($this->»a);
+		return count($this->ï¿½a);
 	}
 }
 
@@ -218,7 +219,7 @@ function _hx_char_at($o, $i) { $c = substr($o, $i, 1); return FALSE === $c ? '' 
 
 function _hx_char_code_at($s, $pos) {
 	if($pos < 0 || $pos >= strlen($s)) return null;
-	return ord($s{$pos});
+	return ord($s[$pos]);
 }
 
 function _hx_deref($o) { return $o; }
@@ -250,7 +251,7 @@ function _hx_mod($x, $y) {
 	return fmod($x, $y);
 }
 
-function _hx_error_handler($errno, $errmsg, $filename, $linenum, $vars) {
+function _hx_error_handler($errno, $errmsg, $filename, $linenum, $vars = null) {
 	$msg = $errmsg . ' (errno: ' . $errno . ') in ' . $filename . ' at line #' . $linenum;
 	$e = new HException($msg, $errmsg, $errno, _hx_anonymous(array('fileName' => 'Boot.hx', 'lineNumber' => __LINE__, 'className' => 'php.Boot', 'methodName' => '_hx_error_handler')));
 	$e->setFile($filename);
@@ -331,8 +332,8 @@ function _hx_field($o, $field) {
 							return $o->$field;
 						}
 					}
-				} else if(isset($o->»dynamics[$field])) {
-					return $o->»dynamics[$field];
+				} else if(isset($o->ï¿½dynamics[$field])) {
+					return $o->ï¿½dynamics[$field];
 				} else {
 					return array($o, $field);
 				}
@@ -345,13 +346,13 @@ function _hx_field($o, $field) {
 
 function _hx_get_object_vars($o) {
 	$a = array_keys(get_object_vars($o));
-	if(isset($o->»dynamics))
-		$a = array_merge($a, array_keys($o->»dynamics));
+	if(isset($o->ï¿½dynamics))
+		$a = array_merge($a, array_keys($o->ï¿½dynamics));
 	$arr = array();
 	for($i=0;$i<count($a); $i++)
 	{
 		$k = '' . $a[$i];
-		if(substr($k, 0, 1) != '»')
+		if(substr($k, 0, 1) != 'ï¿½')
 			$arr[] = $k;
 	}
 	return $arr;
@@ -359,7 +360,7 @@ function _hx_get_object_vars($o) {
 
 function _hx_has_field($o, $field) {
 	return
-		(is_object($o) && (method_exists($o, $field) || isset($o->$field) || property_exists($o, $field) || isset($o->»dynamics[$field])))
+		(is_object($o) && (method_exists($o, $field) || isset($o->$field) || property_exists($o, $field) || isset($o->ï¿½dynamics[$field])))
 		||
 		(is_string($o) && (in_array($field, array('toUpperCase', 'toLowerCase', 'charAt', 'charCodeAt', 'indexOf', 'lastIndexOf', 'split', 'substr', 'toString', 'length'))))
 	;
@@ -412,46 +413,45 @@ function _hx_len($o) {
 }
 
 class _hx_list_iterator implements Iterator {
-	private $»h;
-	private $»list;
-	private $»counter;
+	private $ï¿½h;
+	private $ï¿½list;
+	private $ï¿½counter;
 	public function __construct($list) {
-		$this->»list = $list;
+		$this->ï¿½list = $list;
 		$this->rewind();
 	}
 
-	public function next() {
-		if($this->»h == null) return null;
-		$this->»counter++;
-		$x = $this->»h[0];
-		$this->»h = $this->»h[1];
-		return $x;
+	public function next(): void {
+		if($this->ï¿½h == null) return;
+		$this->ï¿½counter++;
+		$x = $this->ï¿½h[0];
+		$this->ï¿½h = $this->ï¿½h[1];
 	}
 
 	public function hasNext() {
-		return $this->»h != null;
+		return $this->ï¿½h != null;
 	}
 
-	public function current() {
+	public function current(): mixed {
 		if (!$this->hasNext()) return null;
-		return $this->»h[0];
+		return $this->ï¿½h[0];
 	}
 
-	public function key() {
-		return $this->»counter;
+	public function key(): mixed {
+		return $this->ï¿½counter;
 	}
 
-	public function valid() {
+	public function valid(): bool {
 		return $this->current() !== null;
 	}
 
-	public function rewind() {
-		$this->»counter = -1;
-		$this->»h = $this->»list->h;
+	public function rewind(): void {
+		$this->ï¿½counter = -1;
+		$this->ï¿½h = $this->ï¿½list->h;
 	}
 
 	public function size() {
-		return $this->»list->length;
+		return $this->ï¿½list->length;
 	}
 }
 
@@ -484,7 +484,9 @@ function _hx_register_type($t) {
 }
 
 function _hx_set_method($o, $field, $func) {
-	$value[0]->scope = $o;
+	if (is_array($func) && isset($func[0]) && is_object($func[0])) {
+		$func[0]->scope = $o;
+	}
 	$o->$field = $func;
 }
 
@@ -563,10 +565,10 @@ function _hx_string_rec($o, $s) {
 				if($o instanceof _hx_type)
 					return $o->__qname__;
 				else {
-					if(is_callable(array($o, 'toString')))
+					if (is_object($o) && method_exists($o, 'toString'))
 						return $o->toString();
 					else {
-						if(is_callable(array($o, '__toString')))
+						if (is_object($o) && method_exists($o, '__toString'))
 							return $o->__toString();
 						else
 							return '[' . _hx_ttype($c) . ']';
@@ -576,12 +578,12 @@ function _hx_string_rec($o, $s) {
 		}
 	}
 	if(is_string($o)) {
-		if(_hx_is_lambda($o)) return '«function»';
+		if(_hx_is_lambda($o)) return 'ï¿½functionï¿½';
 //		if(strlen($s) > 0)    return '"' . str_replace('"', '\"', $o) . '"';
 		else                  return $o;
 	}
 	if(is_array($o)) {
-		if(is_callable($o)) return '«function»';
+		if(is_callable($o)) return 'ï¿½functionï¿½';
 		$str = '[';
 		$s .= "	";
 		$first = true;
@@ -662,7 +664,7 @@ class _hx_anonymous extends stdClass {
 		$b = '{ ';
 		$properties = $rfl->getProperties();
 		$first = true;
-		while(list(, $prop) = each($properties)) {
+		foreach ($properties as $prop) {
 			if($first)
 				$first = false;
 			else
@@ -708,23 +710,31 @@ class _hx_type {
 	}
 
 	public function __get($n) {
-		if(($r = $this->__rfl__())==null) return null;
-		if($r->hasProperty($n))
+		$r = $this->__rfl__();
+		if(!is_object($r)) return null;
+		$hasProperty = $r->hasProperty($n);
+		if($hasProperty) {
 			return $r->getStaticPropertyValue($n);
-		else if($r->hasMethod($n))
+		}
+		$hasMethod = $r->hasMethod($n);
+		if($hasMethod) {
 			return array($r, $n);
-		else
-			return null;
+		}
+		return null;
 	}
 
 	public function __set($n, $v) {
-		if(($r = $this->__rfl__())==null) return null;
+		$r = $this->__rfl__();
+		if(!is_object($r)) return null;
 		return $r->setStaticPropertyValue($n, $v);
 	}
 
 	public function __isset($n) {
-		if(($r = $this->__rfl__())==null) return null;
-		return $r->hasProperty($n) || $r->hasMethod($n);
+		$r = $this->__rfl__();
+		if(!is_object($r)) return null;
+		$hasProperty = $r->hasProperty($n);
+		$hasMethod = $r->hasMethod($n);
+		return $hasProperty || $hasMethod;
 	}
 }
 
@@ -804,6 +814,9 @@ $_hx_libdir = dirname(__FILE__) . '/..';
 $_hx_autload_cache_file = $_hx_libdir . '/../cache/haxe_autoload.php';
 if(!file_exists($_hx_autload_cache_file)) {
 	function _hx_build_paths($d, &$_hx_types_array, $pack, $prefix) {
+		if (!is_array($pack)) {
+			$pack = array();
+		}
 		$h = opendir($d);
 		while(false !== ($f = readdir($h))) {
 			$p = $d.'/'.$f;
@@ -831,13 +844,13 @@ if(!file_exists($_hx_autload_cache_file)) {
 					$t = 3;
 				} else
 					continue;
-				$qname = ($bn == 'HList' && empty($pack)) ? 'List' : join(array_merge($pack, array($bn)), '.');
+				$qname = ($bn == 'HList' && empty($pack)) ? 'List' : implode('.', array_merge($pack, array($bn)));
 				$_hx_types_array[] = array(
 					'path' => $p,
 					'name' => $prefix . $bn,
 					'type' => $t,
 					'qname' => $qname,
-					'phpname' => join(array_merge($pack, array($prefix . $bn)), '_')
+					'phpname' => implode('_', array_merge($pack, array($prefix . $bn)))
 				);
 			} else if(is_dir($p))
 				_hx_build_paths($p, $_hx_types_array, array_merge($pack, array($f)), $prefix);
